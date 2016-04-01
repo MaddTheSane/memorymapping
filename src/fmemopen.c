@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/mman.h>
+#include "fmemopen.h"
 
 struct fmem {
   size_t pos;
