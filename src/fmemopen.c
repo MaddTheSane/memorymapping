@@ -20,6 +20,7 @@
 #include <string.h>
 #include <sys/mman.h>
 #include "fmemopen.h"
+#undef fmemopen
 
 struct fmem {
   size_t pos;
@@ -92,7 +93,10 @@ static int closefn(void *handler) {
   return 0;
 }
 
-FILE *fmemopen(void *buf, size_t size, const char *mode) {
+FILE *fmemopen_(void *buf, size_t size, const char *mode) {
+  if (__builtin_available(macOS 10.13, *)) {
+    return fmemopen(buf, size, mode);
+  }
   // This data is released on fclose.
   fmem_t* mem = (fmem_t *) malloc(sizeof(fmem_t));
 
